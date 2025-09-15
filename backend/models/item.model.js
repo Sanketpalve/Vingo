@@ -14,6 +14,7 @@ const itemSchema=new mongoose.Schema({
         ref:"Shop",
         required:true,
     },
+    
     category:{
         type:String,
         enum:["Snacks",
