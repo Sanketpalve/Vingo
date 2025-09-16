@@ -13,6 +13,7 @@ import { TbReceiptDollar } from "react-icons/tb";
 
 function Nav() {
   const { userData, city } = useSelector((state) => state.user);
+  const { myShopData} = useSelector((state) => state.owner);
   const [showInfo, setShowInfo] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const dispatch = useDispatch();
@@ -82,8 +83,9 @@ function Nav() {
         )}
 
         {userData.role == "owner" ? (
-          <>
-            <button className="hidden md:flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
+          <> 
+           {myShopData && <>
+             <button className="hidden md:flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
               <FaPlus size={20} />
               <span>Add Food Item</span>
             </button>
@@ -91,9 +93,15 @@ function Nav() {
             <button className="md:hidden  flex items-center p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
               <FaPlus size={20} />
             </button>
+           </>}
             <div className="hidden md:flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium">
               <TbReceiptDollar size={20}/>
               <span>My Orders</span>
+              <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px]">0</span>
+            </div>
+
+            <div className="md:hidden flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium">
+              <TbReceiptDollar size={20}/>
               <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px]">0</span>
             </div>
           </>
