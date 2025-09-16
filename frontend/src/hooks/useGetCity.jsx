@@ -18,8 +18,10 @@ function useGetCity() {
         //console.log(result.data.reults[0].city)
         dispatch(setCurrentCity(result?.data.results[0].city))
         dispatch(setCurrentState(result?.data?.results[0].state))
-        dispatch(setCurrentAddress(result?.data?.results[0].address))
-        //console.log(result?.data?.results[0].state)
+        dispatch(setCurrentAddress(result?.data?.results[0].address_line1 || result?.data?.results[0].address_line2))
+        // console.log(result?.data?.results[0].city)
+        // console.log(result?.data?.results[0].state)
+        // console.log(result?.data?.results[0].address_line1)
     })
   },[userData])
 }
