@@ -1,8 +1,10 @@
 import React from 'react'
-import { data } from 'react-router-dom'
+import { data, useNavigate } from 'react-router-dom'
 import { FaPen } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa6";
 
 function OwnerItemCard() {
+  const navigate=useNavigate()
   return (
     <div className='flex bg-white rounded-lg shadow-md overflow-hidden border border-[#ff4d2d] w-full max-w-2xl'>
       <div className='w-36 h-full flex-shrink-0 bg-gray-50'>
@@ -15,9 +17,18 @@ function OwnerItemCard() {
                 <p><span className='font-medium text-gray-70'>Food Type:</span> {data.foodType}</p>
             </div>
 
-            <div>
-              <div><span>Price:</span>{data.price}</div>
-                <FaPen />
+            <div className='flex items-center justify-between'>
+              <div className='text-[#ff4d2d] font-bold'>{data.price}</div>
+
+              <div className='flex items-center gap-2'>
+                <div className='p-2 cursor-pointer rounded-full hover:bg-[#ff4d2d]/10 text-[#ff4d2d]' onClick={()=>navigate("/edit-item")}>
+                  <FaPen size={16}/>
+                </div>
+                <div className='p-2 cursor-pointer rounded-full hover:bg-[#ff4d2d]/10 flex items-center gap-2 text-[#ff4d2d]'>
+                  <FaTrash size={16}/>
+                </div>
+              </div>
+                
             </div>
       </div>
     </div>
