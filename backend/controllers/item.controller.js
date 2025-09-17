@@ -19,7 +19,10 @@ export const addItem=async (req,res) => {
 
         shop.items.push(item._id)
         await shop.save()
-        await shop.populate("owner")
+        await shop.populate("owner").populate({
+            path:"items",
+            options:{sort:{updatedAt:-1}}
+        })
         return res.status(201).json(shop)
 
     } catch (error) {
@@ -59,9 +62,28 @@ export const getItemById=async (req,res) => {
         if(!item){
             return res.status(400).json({message:"item not found"}) 
         }
-        const shop = await Shop.findOne({owner:req.userId}).populate("items")
-        return res.status(200).json(shop)
+        return res.status(200).json(item)
     } catch (error) {
         return res.status(500).json({message:`get item error ${error}`})
+    }
+}
+
+export const deleteItem=async (req,res) => {
+    try {
+        const itemId=req.params.itemId
+        const item=await Item.findByIdAndDelete(itemId)
+        if(!item){
+            return res.status(400).json({message:"item not found"}) 
+        }
+        const shop=await Shop.findOne({owner:req.userId})
+        shop.items=shop.items.filter(i=>i!==item._id)
+        await shop.save()
+        await shop.populate({
+            path:"items",
+            options:{sort:{updatedAt:-1}}
+        })
+        return res.status(200).json(shop)
+    } catch (error) {
+        return res.status(500).json({message:`delete item error ${error}`})
     }
 }
