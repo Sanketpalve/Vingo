@@ -10,9 +10,23 @@ import { serverUrl } from "../App.jsx";
 function AddItem() {
   const navigate = useNavigate();
   const { myShopData } = useSelector((state) => state.owner);
-  const [name,setName] = useState(myShopData?.name || "")
-  const [frontendImage,setFrontendImage]=useState(myShopData?.image || null)
+  const [name,setName] = useState("")
+  const [price,setPrice] = useState(0)
+  const [frontendImage,setFrontendImage]=useState(null)
   const [backendImage,setBackendImage]=useState(null)
+  const [category,setCategory]=useState("")
+  const [foodType,setFoodType]=useState("veg")
+  const categories=["Snacks",
+            "Main Course",
+            "Desserts",
+            "Pizza",
+            "Burgers",
+            "Sandwiches",
+            "South Indian",
+            "North Indian",
+            "Chinese",
+            "Fast Food",
+            "Others"]
   const dispatch=useDispatch()
   const handleImage=(e)=>{
     const file=e.target.files[0]
@@ -26,10 +40,13 @@ function AddItem() {
     try {
         const formData=new FormData()
         formData.append("name",name)
+        formData.append("category",category)
+        formData.append("foodType",foodType)
+        formData.append("price",price)
         if(backendImage){
             formData.append("image",backendImage)
         }
-        const result=await axios.post(`${serverUrl}/api/shop/create-edit`,formData,{withCredentials:true})
+        const result=await axios.post(`${serverUrl}/api/item/add-item`,formData,{withCredentials:true})
         dispatch(setMyShopData(result.data))
         console.log(result.data)
     } catch (error) {
@@ -52,7 +69,7 @@ function AddItem() {
           </div>
 
           <div className="text-3xl font-extrabold text-gray-900">
-            {myShopData ? "Edit Shop" : "Add Shop"}
+           Add Food
           </div>
         </div>
 
@@ -64,7 +81,7 @@ function AddItem() {
             </label>
             <input
               type="text"
-              placeholder="Enter Shop Name"
+              placeholder="Enter Food Item Name"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               onChange={(e)=>setName(e.target.value)}
               value={name}
@@ -73,7 +90,7 @@ function AddItem() {
 
           <div>
             <label className="black text-sm font-medium text-gray-700 mb-1">
-              Shop Image
+              Food Image
             </label>
             <input
               type="file"
@@ -87,44 +104,49 @@ function AddItem() {
             
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label className="black text-sm font-medium text-gray-700 mb-1">
-              City
+          <div>
+            <label className="black text-sm font-medium text-gray-700 mb-1">
+              Price
             </label>
             <input
-              type="text"
-              placeholder="City"
+              type="number"
+              placeholder="0"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-              onChange={(e)=>setCity(e.target.value)}
-              value={city}
+              onChange={(e)=>setPrice(e.target.value)}
+              value={price}
             />
-            </div>
-            <div>
-                <label className="black text-sm font-medium text-gray-700 mb-1">
-              State
-            </label>
-            <input
-              type="text"
-              placeholder="State"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-              onChange={(e)=>setState(e.target.value)}
-              value={state}
-            />
-            </div>
           </div>
 
           <div>
             <label className="black text-sm font-medium text-gray-700 mb-1">
-              Address
+              Select Category
             </label>
-            <input
-              type="text"
-              placeholder="Enter Shop Address"
+            <select
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-              onChange={(e)=>setAddress(e.target.value)}
-              value={address}
-            />
+              onChange={(e)=>setCategory(e.target.value)}
+              value={category}>
+
+              <option value="">Select Category</option>
+            {categories.map((cate,index)=>(
+                <option value={cate} key={index}>{cate}</option>
+            ))}
+
+            </select>
+          </div>
+
+          <div>
+            <label className="black text-sm font-medium text-gray-700 mb-1">
+              Select Food Type
+            </label>
+            <select
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              onChange={(e)=>setFoodType(e.target.value)}
+              value={foodType}>
+
+                <option value="veg">veg</option>
+                <option value="non veg">non veg</option>
+
+            </select>
           </div>
 
            <button className="w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer">
