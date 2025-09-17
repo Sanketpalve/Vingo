@@ -6,9 +6,11 @@ import { FaUtensils } from "react-icons/fa";
 import { setMyShopData } from "../redux/ownerSlice";
 import axios from "axios";
 import { serverUrl } from "../App.jsx";
+import { ClipLoader } from "react-spinners";
 
 function AddItem() {
   const navigate = useNavigate();
+  const [loading,setLoading]=useState(false)
   const { myShopData } = useSelector((state) => state.owner);
   const [name,setName] = useState("")
   const [price,setPrice] = useState(0)
@@ -36,6 +38,7 @@ function AddItem() {
 
   const handleSubmit=async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     try {
         const formData=new FormData()
@@ -48,9 +51,11 @@ function AddItem() {
         }
         const result=await axios.post(`${serverUrl}/api/item/add-item`,formData,{withCredentials:true})
         dispatch(setMyShopData(result.data))
-        console.log(result.data)
+        //console.log(result.data)
+        setLoading(false)
     } catch (error) {
         console.log(error)
+        setLoading(false)
     }
   }
   return (
@@ -149,8 +154,8 @@ function AddItem() {
             </select>
           </div>
 
-           <button className="w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer">
-            Save
+           <button className="w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all duration-200 cursor-pointer" disabled={loading}>
+            {loading?<ClipLoader size={20} color="white"/>:"Save"}
            </button> 
         </form>
       </div>
