@@ -7,12 +7,13 @@ import { useDispatch } from 'react-redux';
 import { setMyShopData } from '../redux/ownerSlice';
 import { serverUrl } from "../App.jsx";
 
-function OwnerItemCard() {
+function OwnerItemCard({data}) {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const handleDelete=async () => {
     try {
       const result=await axios.get(`${serverUrl}/api/item/delete/${data._id}`,{withCredentials:true})
+      // console.log(result)
       dispatch(setMyShopData(result.data))
     } catch (error) {
       console.log(error)
