@@ -4,8 +4,10 @@ import { categories } from '../category'
 import CategoryCard from './CategoryCard'
 import { FaChevronCircleLeft } from "react-icons/fa";
 import { FaChevronCircleRight } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 function UserDashboard() {
+  const {currentCity}=useSelector(state=>state.user)
   const cateScrollRef=useRef()
   const [showLeftCateButton,setShowLeftCateButton]=useState(false)
   const [showRightCateButton,setShowRightCateButton]=useState(false)
@@ -32,11 +34,15 @@ function UserDashboard() {
 
   useEffect(()=>{
     if(cateScrollRef.current){
+      updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
         cateScrollRef.current.addEventListener('scroll',()=>{
           updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
         })
     }
-  },[])
+    return ()=>cateScrollRef.current.removeEventListner("scroll",()=>{
+      updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
+    })
+  },[categories])
 
 
 
@@ -44,6 +50,7 @@ function UserDashboard() {
     <div className='w-full min-h-screen bg-[#fff9f6] flex flex-col items-center overflow-y-auto'>
       <Nav/>
 
+{/* category */}
       <div className='w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]'>
         <h1 className='text-gray-800 text-2xl sm:text-3xl'>Inspiration for your first order</h1>
         <div className='w-full relative'>
@@ -63,6 +70,12 @@ function UserDashboard() {
           </button>}
 
         </div>
+        
+      </div>
+
+{/* shop */}
+      <div className='w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]'>
+        <h1 className='text-gray-800 text-2xl sm:text-3xl'>Best Shop in {currentCity} </h1>
       </div>
     </div>
   )
