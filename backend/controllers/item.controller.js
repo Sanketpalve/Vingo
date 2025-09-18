@@ -19,7 +19,8 @@ export const addItem=async (req,res) => {
 
         shop.items.push(item._id)
         await shop.save()
-        await shop.populate("owner").populate({
+        await shop.populate("owner")
+        await shop.populate({
             path:"items",
             options:{sort:{updatedAt:-1}}
         })

@@ -53,6 +53,7 @@ function AddItem() {
         dispatch(setMyShopData(result.data))
         //console.log(result.data)
         setLoading(false)
+        navigate("/")
     } catch (error) {
         console.log(error)
         setLoading(false)
