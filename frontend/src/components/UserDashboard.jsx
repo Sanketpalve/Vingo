@@ -5,9 +5,10 @@ import CategoryCard from './CategoryCard'
 import { FaChevronCircleLeft } from "react-icons/fa";
 import { FaChevronCircleRight } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import FoodCard from './FoodCard';
 
 function UserDashboard() {
-  const {currentCity,shopInMyCity}=useSelector(state=>state.user)
+  const {currentCity,shopInMyCity,itemsInMyCity}=useSelector(state=>state.user)
   const cateScrollRef=useRef()
   const shopScrollRef=useRef()
   const [showLeftCateButton,setShowLeftCateButton]=useState(false)
@@ -107,6 +108,12 @@ function UserDashboard() {
 
       <div  className='w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]'>
         <h1 className='text-gray-800 text-2xl sm:text-3xl'>Suggested Food Items </h1>
+      </div>
+
+      <div className='w-full h-auto flex-wrap gap-[20] justify-center'>
+        {itemsInMyCity?.map((item,index)=>(
+          <FoodCard key={index} data={item}/>
+        ))}
       </div>
     </div>
   )
