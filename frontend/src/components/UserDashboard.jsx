@@ -110,7 +110,7 @@ function UserDashboard() {
         <h1 className='text-gray-800 text-2xl sm:text-3xl'>Suggested Food Items </h1>
       </div>
 
-      <div className='w-full h-auto flex-wrap gap-[20] justify-center'>
+      <div className='w-full h-auto flex flex-wrap gap-5 justify-center'>
         {itemsInMyCity?.map((item,index)=>(
           <FoodCard key={index} data={item}/>
         ))}
