@@ -7,10 +7,13 @@ import { FaChevronCircleRight } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 
 function UserDashboard() {
-  const {currentCity}=useSelector(state=>state.user)
+  const {currentCity,shopInMyCity}=useSelector(state=>state.user)
   const cateScrollRef=useRef()
+  const shopScrollRef=useRef()
   const [showLeftCateButton,setShowLeftCateButton]=useState(false)
   const [showRightCateButton,setShowRightCateButton]=useState(false)
+  const [showLeftShopButton,setShowLeftShopButton]=useState(false)
+  const [showRightShopButton,setShowRightShopButton]=useState(false)
 
   const updateButton=(ref,setLeftButton,setRightButton)=>{
     const element=ref.current
@@ -35,13 +38,20 @@ function UserDashboard() {
   useEffect(()=>{
     if(cateScrollRef.current){
       updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
+      updateButton(shopScrollRef,setShowLeftShopButton,setShowRightShopButton)
         cateScrollRef.current.addEventListener('scroll',()=>{
           updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
         })
+        cateScrollRef.current.addEventListener('scroll',()=>{
+          updateButton(shopScrollRef,setShowLeftShopButton,setShowRightShopButton)
+        })
     }
-    return ()=>cateScrollRef.current.removeEventListner("scroll",()=>{
+    return ()=>{cateScrollRef.current.removeEventListner("scroll",()=>{
       updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
-    })
+    }),
+    shopScrollRef.current.removeEventListner("scroll",()=>{
+      updateButton(shopScrollRef,setShowLeftShopButton,setShowRightShopButton)
+    })}
   },[categories])
 
 
@@ -61,7 +71,7 @@ function UserDashboard() {
 
           <div className='w-full flex overflow-x-auto gap-4 pb-2 ' ref={cateScrollRef}>
           {categories.map((cate,index)=>(
-            <CategoryCard data={cate} key={index}/>
+            <CategoryCard name={cate.category} image={cate.image} key={index}/>
           ))}
           </div>
 
@@ -76,6 +86,27 @@ function UserDashboard() {
 {/* shop */}
       <div className='w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]'>
         <h1 className='text-gray-800 text-2xl sm:text-3xl'>Best Shop in {currentCity} </h1>
+        <div className='w-full relative'>
+
+        {showLeftShopButton && <button className='absolute left-0 top-1/2 -translate-y-1/2 bg-[#ff4d2d] text-white p-2 rounded-full shadow-lg hover:bg-[#e64528] z-10' onClick={()=>scrollHandler(shopScrollRef,"left")}>
+          <FaChevronCircleLeft />
+        </button>}
+
+          <div className='w-full flex overflow-x-auto gap-4 pb-2 ' ref={shopScrollRef}>
+          {shopInMyCity?.map((shop,index)=>(
+            <CategoryCard name={shop.name} image={shop.image} key={index}/>
+          ))}
+          </div>
+
+          {showRightShopButton && <button className='absolute right-0 top-1/2 -translate-y-1/2 bg-[#ff4d2d] text-white p-2 rounded-full shadow-lg hover:bg-[#e64528] z-10' onClick={()=>scrollHandler(shopScrollRef,"right")}>
+            <FaChevronCircleRight />
+          </button>}
+
+        </div>
+      </div>
+
+      <div  className='w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]'>
+        <h1 className='text-gray-800 text-2xl sm:text-3xl'>Suggested Food Items </h1>
       </div>
     </div>
   )
