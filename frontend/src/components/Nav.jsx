@@ -111,7 +111,7 @@ function Nav() {
           </>
         ) : (
           <>
-            <div className="relative cursor-pointer">
+            <div className="relative cursor-pointer" onClick={()=>navigate("/cart")}>
               <LuShoppingCart size={25} className="text-[#ff4d2d]" />
               <span className="absolute right-[-9px] top-[-12px] text-[#ff4d2d]">
                 {cartItems.length}
