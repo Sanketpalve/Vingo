@@ -2,6 +2,7 @@ import React from 'react'
 import { IoMdArrowBack } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import CartItemCard from '../components/CartItemCard';
 
 function CartPage() {
     const navigate=useNavigate()
@@ -23,7 +24,9 @@ function CartPage() {
             <p className='text-gray-500 text-lg text-center'>Your cart is Empty</p>
         ):(
           <div>
-
+            {cartItems?.map((item,index)=>(
+                <CartItemCard data={item} key={index}/>
+            ))}
           </div>  
         )}
       </div>

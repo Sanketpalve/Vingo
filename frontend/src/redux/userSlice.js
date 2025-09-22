@@ -39,6 +39,9 @@ const userSlice=createSlice({
             else{
                 state.cartItems.push(cartItem)
             }
+        },
+        updateQuantity:(state,action)=>{
+            
         }
     }
 })
