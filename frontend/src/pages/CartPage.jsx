@@ -6,7 +6,7 @@ import CartItemCard from '../components/CartItemCard';
 
 function CartPage() {
     const navigate=useNavigate()
-    const {cartItems}=useSelector(state=>state.user)
+    const {cartItems,totalAmount}=useSelector(state=>state.user)
   return (
     <div className='min-h-screen bg-[#fff9f6] flex justify-center p-6'>
       <div className='w-full max-w-[800px]'>
@@ -23,11 +23,17 @@ function CartPage() {
         {cartItems?.length==0 ? (
             <p className='text-gray-500 text-lg text-center'>Your cart is Empty</p>
         ):(
+            <>
           <div className='space-y-4'>
             {cartItems?.map((item,index)=>(
                 <CartItemCard data={item} key={index}/>
             ))}
           </div>  
+            <div className='mt-6 bg-white p-4 rounded-xl shadow flex justify-between items-center border'>
+                <h1 className='text-lg font-semibold'>Total Amount</h1>
+                <span className='text-xl font-bold text-[#ff4d2d]'>₹{totalAmount}</span>
+            </div>
+            </>
         )}
       </div>
     </div>
