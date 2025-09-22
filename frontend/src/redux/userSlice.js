@@ -41,10 +41,14 @@ const userSlice=createSlice({
             }
         },
         updateQuantity:(state,action)=>{
-            
+            const {id,quantity}=action.payload
+            const item=state.cartItems.find(i=>i.id==id)
+            if(item){
+                item.quantity=quantity
+            }
         }
     }
 })
 
-export const {setUserData,setCurrentCity,setCurrentState,setCurrentAddress,setShopsInMyCity,setItemsInMyCity,addToCart}=userSlice.actions
+export const {setUserData,setCurrentCity,setCurrentState,setCurrentAddress,setShopsInMyCity,setItemsInMyCity,addToCart,updateQuantity}=userSlice.actions
 export default userSlice.reducer
