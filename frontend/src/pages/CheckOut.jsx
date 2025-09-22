@@ -1,4 +1,7 @@
 import React from "react";
+import { FaCreditCard } from "react-icons/fa";
+import { FaMobileAlt } from "react-icons/fa";
+import { MdDeliveryDining } from "react-icons/md";
 import { IoMdArrowBack } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
@@ -25,6 +28,7 @@ function CheckOut() {
   const navigate=useNavigate()
   const { location, address } = useSelector((state) => state.map);
   const [addressInput,setAddressInput]=useState("")
+  const [paymentMethod,setPaymentMethod]=useState("cod")
   const dispatch=useDispatch()
   const apiKey=import.meta.env.VITE_GEOAPIKEY
   const onDragEnd=(e)=>{
@@ -57,7 +61,7 @@ function CheckOut() {
   const getLatlngByAddress=async () => {
     try {
       const result=await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(addressInput)}&apiKey=${apiKey}`)
-      console.log(result.data.features[0].properties)
+      //console.log(result.data.features[0].properties)
       const {lat,lon}=result.data.features[0].properties
       dispatch(setLocation({lat,lon}))
     } catch (error) {
@@ -112,6 +116,30 @@ function CheckOut() {
                 <Marker position={[location?.lat, location?.lon]} draggable eventHandlers={{dragend:onDragEnd}}></Marker>
 
               </MapContainer>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold mb-3 text-gray-800">Payment Method</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* cash on delivery */}
+            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${ paymentMethod==="cod" ? "border-[#ff4d2d] bg-orange-50 shadow":"border-gray-200 hover:border-gray-300"}`} onClick={()=>setPaymentMethod("cod")}>
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-100"><MdDeliveryDining className="text-green-600 text-xl"/></span>
+              <div>
+                <p className="font-medium text-gray-800">Cash On Delivery</p>
+                <p className="text-xs text-gray-500">Pay when your food arrives</p>
+              </div>
+            </div>
+
+            {/* Online */}
+            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${ paymentMethod==="online" ? "border-[#ff4d2d] bg-orange-50 shadow":"border-gray-200 hover:border-gray-300"}`} onClick={()=>setPaymentMethod("online")}>
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-purple-100"><FaMobileAlt className="text-purple-700 text-lg" /></span>
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-100"><FaCreditCard className="text-blue-700 text-lg" /></span>
+              <div>
+                <p className="font-medium text-gray-800">UPI / Credit / Debit Card</p>
+                <p className="text-xs text-gray-500">Pay Securely Online</p>
+              </div>
             </div>
           </div>
         </section>
