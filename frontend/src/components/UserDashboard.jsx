@@ -47,10 +47,10 @@ function UserDashboard() {
           updateButton(shopScrollRef,setShowLeftShopButton,setShowRightShopButton)
         })
     }
-    return ()=>{cateScrollRef.current.removeEventListner("scroll",()=>{
+    return ()=>{cateScrollRef?.current?.removeEventListner("scroll",()=>{
       updateButton(cateScrollRef,setShowLeftCateButton,setShowRightCateButton)
     }),
-    shopScrollRef.current.removeEventListner("scroll",()=>{
+    shopScrollRef?.current?.removeEventListner("scroll",()=>{
       updateButton(shopScrollRef,setShowLeftShopButton,setShowRightShopButton)
     })}
   },[categories])
