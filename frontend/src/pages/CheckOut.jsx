@@ -3,14 +3,46 @@ import { IoMdArrowBack } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { TbCurrentLocation } from "react-icons/tb";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import { useSelector } from "react-redux";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { useDispatch, useSelector } from "react-redux";
 import "leaflet/dist/leaflet.css";
 import { useState } from "react";
 import { useEffect } from "react";
+import { setAddress, setLocation } from "../redux/mapSlice";
+import axios from "axios";
+
+
+function RecenterMap({location}){
+  if(location.lat && location.lon){
+    const map=useMap()
+    map.setView([location.lat,location.lon],16,{animate:true})
+  }
+  return null
+}
 
 function CheckOut() {
   const { location, address } = useSelector((state) => state.map);
+  const dispatch=useDispatch()
+  const onDragEnd=(e)=>{
+    // console.log(e)
+    const {lat,lng}=e.target._latlng
+    dispatch(setLocation({lat,lon:lng}))
+    getAddressByLatLng(lat,lng)
+  }
+
+  const getAddressByLatLng=async (lat,lng) => {
+    try {
+      const apiKey=import.meta.env.VITE_GEOAPIKEY
+      const result=await axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&format=json&apiKey=${apiKey}`)
+      //console.log(result?.data?.results[0].address_line2)
+      dispatch(setAddress(result?.data?.results[0].address_line2))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  
+
   return (
     <div className="min-h-screen bg-[#fff9f6] flex items-center justify-center p-6">
       <div
@@ -50,7 +82,8 @@ function CheckOut() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[location?.lat, location?.lon]}></Marker>
+                <RecenterMap location={location}/>
+                <Marker position={[location?.lat, location?.lon]} draggable eventHandlers={{dragend:onDragEnd}}></Marker>
 
               </MapContainer>
             </div>
