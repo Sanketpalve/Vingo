@@ -15,6 +15,7 @@ import useGetShopByCity from './hooks/useGetShopByCity';
 import useGetItemsByCity from './hooks/useGetItemsByCity';
 import CartPage from './pages/CartPage';
 import CheckOut from './pages/CheckOut';
+import OrderPlaced from './pages/OrderPlaced';
 export const serverUrl = "http://localhost:8000";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
     <Route path='/edit-item/:itemId' element={userData ? <EditItem/>:<Navigate to={"/signin"}/>}/>
     <Route path='/cart' element={userData ? <CartPage/>:<Navigate to={"/signin"}/>}/>
     <Route path='/checkout' element={userData ? <CheckOut/>:<Navigate to={"/signin"}/>}/>
+    <Route path='/order-placed' element={userData ? <OrderPlaced/>:<Navigate to={"/signin"}/>}/>
    </Routes>
   )
 }
