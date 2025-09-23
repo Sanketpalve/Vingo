@@ -73,6 +73,24 @@ function CheckOut() {
     }
   }
 
+  const handlePlaceOrder=async () => {
+    try {
+      const result=await axios.post(`${serverUrl}/api/order/place-order`,{
+        paymentMethod,
+        deliveryAddress:{
+          text:addressInput,
+          latitude:location.lat,
+          longitude:location.lon
+        },
+        totalAmount,
+        cartItems
+      },{withCredentials:true})
+      console.log(result.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(()=>{
     setAddressInput(address)
   },[address])
@@ -172,7 +190,7 @@ function CheckOut() {
             </div>
           </div>
         </section>
-        <button className="w-full bg-[#ff4d2d] hover:bg-[#e64526] text-white py-3 rounded-xl font-semibold">
+        <button className="w-full bg-[#ff4d2d] hover:bg-[#e64526] text-white py-3 rounded-xl font-semibold" onClick={handlePlaceOrder}>
         {paymentMethod=="cod"?"Place Order":"Pay and Place Order"}</button>
       </div>
     </div>
