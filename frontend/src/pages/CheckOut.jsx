@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { setAddress, setLocation } from "../redux/mapSlice";
 import axios from "axios";
+import { serverUrl } from "../App.jsx";
 
 
 function RecenterMap({location}){
@@ -86,6 +87,7 @@ function CheckOut() {
         cartItems
       },{withCredentials:true})
       console.log(result.data)
+      navigate("/order-placed")
     } catch (error) {
       console.log(error)
     }
@@ -190,7 +192,7 @@ function CheckOut() {
             </div>
           </div>
         </section>
-        <button className="w-full bg-[#ff4d2d] hover:bg-[#e64526] text-white py-3 rounded-xl font-semibold" onClick={handlePlaceOrder}>
+        <button className="w-full bg-[#ff4d2d] hover:bg-[#e64526] text-white py-3 rounded-xl font-semibold cursor-pointer" onClick={handlePlaceOrder}>
         {paymentMethod=="cod"?"Place Order":"Pay and Place Order"}</button>
       </div>
     </div>
