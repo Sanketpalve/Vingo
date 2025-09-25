@@ -22,7 +22,13 @@ const shopOrderSchema=new mongoose.Schema({
     },
     subTotal:Number,
 
-    shopOrderItems:[shopOrderItemSchema]
+    shopOrderItems:[shopOrderItemSchema],
+
+    status:{
+        type:String,
+        enum:["pending","preparing","out of delivery","delivered"],
+        default:"pending"
+    }
 
 },{timestamps:true})
 
