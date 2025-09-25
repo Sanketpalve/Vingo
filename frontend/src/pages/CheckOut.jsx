@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { setAddress, setLocation } from "../redux/mapSlice";
 import axios from "axios";
 import { serverUrl } from "../App.jsx";
+import { addMyOrder } from "../redux/userSlice.js";
 
 
 function RecenterMap({location}){
@@ -86,7 +87,8 @@ function CheckOut() {
         totalAmount,
         cartItems
       },{withCredentials:true})
-      console.log(result.data)
+      //console.log(result.data)
+      dispatch(addMyOrder(result.data))
       navigate("/order-placed")
     } catch (error) {
       console.log(error)

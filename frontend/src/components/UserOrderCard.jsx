@@ -30,7 +30,7 @@ function UserOrderCard({data}) {
         <div className='border rounded-lg p-3 bg-[#fffaf7] space-y-3' key={index}>
             <p>{shopOrder.shop.name}</p>
 
-            <diV className='flex space-x-4 overflow-x-auto pb-2'>
+            <div className='flex space-x-4 overflow-x-auto pb-2'>
               {shopOrder.shopOrderItems.map((item,index)=>(
                   <div key={index} className='flex-shrink-0 w-40 border rounded-lg p-2 bg-white'>
                       <img src={item.item.image} className='w-full h-24 object-cover rounded'/>
@@ -38,7 +38,7 @@ function UserOrderCard({data}) {
                       <p className='text-xs text-gray-500'>Qty: {item.quantity} x ₹{item.price}</p>
                   </div>
               ))}
-            </diV>
+            </div>
             <div className='flex justify-between items-center border-t pt-2'>
               <p className='font-semibold'>Subtotal: ₹{shopOrder.subtotal}</p>
               <span className='text-sm font-medium text-blue-600'>{shopOrder.status}</span>
