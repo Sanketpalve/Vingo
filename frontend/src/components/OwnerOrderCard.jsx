@@ -1,13 +1,16 @@
 import axios from 'axios';
 import React from 'react'
 import { MdPhone } from "react-icons/md";
+import { useDispatch } from 'react-redux';
+import { updateOrderStatus } from '../redux/userSlice';
 
 function OwnerOrderCard({data}) {
 
   const handleUpdateStatus=async (orderId,shopId,status) => {
     try {
       const result=await axios.post(`${serverUrl}/api/order/update-status/${orderId}/${shopId}`,{status},{withCredentials:true})
-      console.log(result.data)
+      //console.log(result.data)
+      dispatch(updateOrderStatus({orderId,shopId,status}))
     } catch (error) {
       console.log(error)
     }
@@ -39,6 +42,7 @@ function OwnerOrderCard({data}) {
         <span className='text-sm'>status: <span className='font-semibold capitalize text-[#ff4d2d]'>{data.shopOrders.status}</span></span>
 
         <select className='rounded-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 border-[#ff4d2d] text-[#ff4d2d]' onChange={(e)=>handleUpdateStatus(data._id,data.shopOrders.shop._id,e.target.value)}>
+          <option value="">Change</option>  
           <option value="pending">Pending</option>
           <option value="preparing">Preparing</option>
           <option value="out of delivery">Out Of delivery</option>

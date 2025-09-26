@@ -4,8 +4,10 @@ import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import UserOrderCard from '../components/UserOrderCard';
 import OwnerOrderCard from '../components/OwnerOrderCard';
+import useGetMyOrders from '../hooks/useGetMyOrders';
 
 function MyOrders() {
+  useGetMyOrders()
   const {userData,myOrders}=useSelector(state=>state.user)
   const navigate=useNavigate()
   return (

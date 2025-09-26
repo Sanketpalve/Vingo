@@ -5,7 +5,7 @@ import { getMyOrders, placeOrder, updateOrderStatus } from "../controllers/order
 const orderRouter=express.Router()
 
 orderRouter.post("/place-order",isAuth,placeOrder)
-orderRouter.get("/my-order",isAuth,getMyOrders)
+orderRouter.get("/my-orders",isAuth,getMyOrders)
 orderRouter.get("/update-status/:orderId/:shopId",isAuth,updateOrderStatus)
 
 export default orderRouter

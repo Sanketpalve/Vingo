@@ -7,6 +7,7 @@ import { setMyOrders, setUserData } from '../redux/userSlice'
 function useGetMyOrders() {
   const dispatch=useDispatch()
   const {userData}=useSelector(state=>state.user)
+
   useEffect(()=>{
     const fetchOrders=async () => {
       try {
@@ -14,6 +15,7 @@ function useGetMyOrders() {
         // console.log(result)
         dispatch(setMyOrders(result.data))
       } catch (error) {
+        if (axios.isCancel(error)) return
         console.log(error)
       }
     }

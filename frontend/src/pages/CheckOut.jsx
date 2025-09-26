@@ -16,10 +16,11 @@ import { setAddress, setLocation } from "../redux/mapSlice";
 import axios from "axios";
 import { serverUrl } from "../App.jsx";
 import { addMyOrder } from "../redux/userSlice.js";
+import MyOrders from "../pages/MyOrders"; 
 
 
 function RecenterMap({location}){
-  if(location.lat && location.lon){
+  if(location?.lat && location?.lon){
     const map=useMap()
     map.setView([location.lat,location.lon],16,{animate:true})
   }
