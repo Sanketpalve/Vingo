@@ -1,10 +1,12 @@
 import axios from 'axios';
-import React from 'react'
+import React from 'react';
 import { MdPhone } from "react-icons/md";
 import { useDispatch } from 'react-redux';
 import { updateOrderStatus } from '../redux/userSlice';
+import { serverUrl } from '../App';
 
 function OwnerOrderCard({data}) {
+  const dispatch = useDispatch();
 
   const handleUpdateStatus=async (orderId,shopId,status) => {
     try {
