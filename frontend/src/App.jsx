@@ -21,13 +21,13 @@ import useGetMyOrders from './hooks/useGetMyOrders';
 export const serverUrl = "http://localhost:8000";
 
 const App = () => {
+  const {userData}=useSelector(state=>state.user)
   useGetCurrentUser()
   useGetCity()
   useGetMyShop()
   useGetShopByCity()
   useGetItemsByCity()
   useGetMyOrders()
-  const {userData}=useSelector(state=>state.user)
   return (
    <Routes>
     <Route path='/signup' element={!userData?<SignUp/>:<Navigate to={"/"}/>}/>
