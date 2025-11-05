@@ -111,12 +111,13 @@ function Nav() {
           </>
         ) : (
           <>
-            <div className="relative cursor-pointer" onClick={()=>navigate("/cart")}>
+          {userData.role=="user" && <div className="relative cursor-pointer" onClick={()=>navigate("/cart")}>
               <LuShoppingCart size={25} className="text-[#ff4d2d]" />
               <span className="absolute right-[-9px] top-[-12px] text-[#ff4d2d]">
                 {cartItems.length}
               </span>
             </div>
+          }
 
             <button className="hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] text-sm font-medium" onClick={()=>navigate("/my-orders")}>
               My Orders
@@ -131,7 +132,7 @@ function Nav() {
           {userData?.fullName ? userData.fullName.slice(0, 1) : "U"}
         </div>
         {showInfo && (
-          <div className="fixed top-[80px] right-[10px] md:right-[10%] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-[20px] flex flex-col gap-[10px] z-[9999]">
+          <div className={`fixed top-[80px] right-[10px] ${userData.role=="deliveryBoy"?"md:right-[40%] lg:right-[25%]":"md:right-[20%] lg:right-[25%]"} w-[180px] bg-white shadow-2xl rounded-xl p-[20px] flex flex-col gap-[10px] z-[9999]`}>
             <div className="text-[17px] font-semibold">
               {userData?.fullName}
             </div>
