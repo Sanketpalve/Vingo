@@ -4,8 +4,10 @@ import { MdPhone } from "react-icons/md";
 import { useDispatch } from 'react-redux';
 import { updateOrderStatus } from '../redux/userSlice';
 import { serverUrl } from '../App';
+import { useState } from 'react';
 
 function OwnerOrderCard({data}) {
+  const [availableBoys,setAvailablesBoys]=useState([])
   const dispatch = useDispatch();
 
   const handleUpdateStatus=async (orderId,shopId,status) => {
@@ -50,6 +52,17 @@ function OwnerOrderCard({data}) {
           <option value="out of delivery">Out Of delivery</option>
         </select>
       </div>
+
+      {data.shopOrders.status=="out of delivery" && 
+        <div className='mt-3 p-2 border rounded-lg text-sm bg-orange-50'>
+        <p>Available Delivery Boys:</p>
+          {availableBoys.length>0?(
+            availableBoys.map((b,index)=>(
+              <div className='text-gray-300'>{b.fullName}-{b.mobile}</div>
+            ))
+          ):<div>Waiting for delivery boy to accept</div>}
+        </div>
+      }
 
       <div className='text-right font-bold text-gray-800 text-sm'>
         Total: ₹{data.shopOrders.subtotal}
