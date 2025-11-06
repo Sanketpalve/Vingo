@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { acceptOrder } from '../../../backend/controllers/order.controller'
 
 function DeliveryBoy() {
   const {userData}=useSelector(state=>state.user)
@@ -18,10 +19,22 @@ function DeliveryBoy() {
       console.log(error)
     }
 
+    const acceptOrder=async (assignmentId) => {
+      try {
+        const result=await axios.get(`${serverUrl}/api/order/accept-order/${assignmentId}`,
+        {withCredentials:true})
+        console.log(result.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     useEffect(()=>{
       getAssignments()
     },[userData])
+
   }
+
   return (
     <div className='w-full min-h-screen bg-[#fff9f6] flex flex-col items-center overflow-y-auto'>
       <Nav/>
@@ -44,7 +57,7 @@ function DeliveryBoy() {
                     <p className='text-sm text-gray-500'><span className='font-semibold'>Delivery Address:</span>{a?.deliveryAddress}</p>
                     <p className='text-xs text-gray-400'>{a.items.length} items | {a.subtotal}</p>
                   </div>
-                  <button className='bg-orange-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-orange-600'>Accept</button>
+                  <button className='bg-orange-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-orange-600' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
                 </div>
               ))
             ):<p className='text-gray-400 text-sm'>No Available Orders</p>

@@ -79,6 +79,7 @@ export const getMyOrders=async (req,res) => {
         .populate("shopOrders.shop","name")
         .populate("user")
         .populate("shopOrders.shopOrderItems.item","name image price")
+        .populate("shopOrders.assignedDeliveryBoy","fullName mobile")
 
         const filteredOders=orders.map((order=>({
             _id:order._id,
@@ -201,5 +202,48 @@ export const getDeliveryBoyAssignment=async (req,res) => {
         return res.status(200).json(formated)
     } catch (error) {
         return res.status(500).json({message:`get assignment error ${error}`})
+    }
+}
+
+export const acceptOrder=async (req,res) => {
+    try {
+        const {assignmentId}=req.params
+        const assignment=await DeliveryAssignment.findById(assignmentId)
+        if(!assignment){
+            return res.staus(400).json({message:"assignment not found"})
+        }
+        if(assignment.status!=="broadcasted"){
+            return res.staus(400).json({message:"assignment is expired"})
+        }
+        const alreadyAssigned=await DeliveryAssignment.findOne({
+            assignedTo:req.userId,
+            status:{$nin:["brodcasted","completed"]}
+        })
+        if(alreadyAssigned){
+            return res.status(400).json({message:"order not found"})
+        }
+
+        assignment.assignedTo=req.userId
+        assignment.status='assigned'
+        assignment.acceptedAt=new Date()
+        await assignment.save()
+
+        const order=await Order.findById(assignment.order)
+
+        if(!order){
+            return res.status(400).json({message:"You are already assigned to another order"})
+        }
+
+        let shopOrder=order.shopOrders.id(assignment.shopOrderId)
+        shopOrder.assignedDeliveryBoy=req.userId
+
+        await order.save()
+        await order.populate('shopOrders.assignedDeliveryBoy')
+
+        return res.status(200).json({
+            message:'order accepted'
+        })
+    } catch (error) {
+        return res.status(500).json({message:`accept order error ${error}`})
     }
 }
