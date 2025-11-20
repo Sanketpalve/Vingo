@@ -75,7 +75,7 @@ function DeliveryBoy() {
                 <div className='border rounded-lg p-4 flex justify-between items-center' key={index}>
                   <div>
                     <p className='text-sm font-semibold'>{a?.shopName}</p>
-                    <p className='text-sm text-gray-500'><span className='font-semibold'>Delivery Address:</span>{a?.deliveryAddress}</p>
+                    <p className='text-sm text-gray-500'><span className='font-semibold'>Delivery Address :</span>{a?.deliveryAddress}</p>
                     <p className='text-xs text-gray-400'>{a.items.length} items | {a.subtotal}</p>
                   </div>
                   <button className='bg-orange-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-orange-600' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
